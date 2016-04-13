@@ -20,6 +20,7 @@ public class LineProcessor {
     patternPhoneNumber.add(Pattern.compile("[(]\\s*([2-9]\\d{2})\\s*[)]\\s*[.-]?\\s*(\\d{3})\\s*[.-]?\\s*(\\d{4})(?:\\D|$)"));
 
     patternEmail.add(Pattern.compile("((?:[a-z0-9!#$%&'*\\+\\-\\/=?^_`{|}~.]|[ ]dot[ ])+)(?:[ ][(]?at[)]?[ ]|[ ]?[@][ ]?|&#x40;)([a-z0-9](?:[a-z0-9-]|[.]|[ ]dot[ ])*(?:[.]|[ ]dot[ ])(?:[a-z0-9-]|[.]|[ ]dot[ ])*[a-z0-9])")); // hostname based
+    patternEmail.add(Pattern.compile("(?:email|mailbox|mailto):([a-z0-9 ]+)at([a-z0-9 ]*)[,]")); // plain text format
 
     patternEmailTag.add(Pattern.compile("(?:mailto\\:|src=)(?:[ ]|%22)*([a-z0-9!#$%&'*\\+\\-\\/=?^_`{|}~.]+)[@]([a-z0-9][a-z0-9.-]*[.][a-z0-9.-]*[a-z0-9])(?:[ ]|%22)*")); // hostname based
   }
@@ -92,7 +93,7 @@ public class LineProcessor {
   }
 
   private String formatEmail(String localPart, String hostName) {
-    return localPart.replaceAll(" dot ", ".").replaceAll(" ", "") + "@" + hostName.replaceAll(" dot ", ".").replaceAll(" ", "");
+    return localPart.trim().replaceAll(" dot ", ".").replaceAll(" ", "") + "@" + hostName.trim().replaceAll(" dot ", ".").replaceAll(" ", ".");
   }
 
   private String findText(final String line) {
